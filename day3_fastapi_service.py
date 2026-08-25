@@ -1,6 +1,5 @@
 """
 Day 3 Project Deliverable: Production-Grade AI Inference Gateway Service
-File: day3_fastapi_service.py
 
 Key Capabilities:
 - Global lifespan resource pooling (httpx.AsyncClient)
@@ -44,13 +43,13 @@ async def lifespan(app: FastAPI):
     """
     # STARTUP: Initialize a single persistent connection pool
     state["http_client"] = httpx.AsyncClient(timeout=10.0)
-    print("🚀 [Lifespan] Connection pool initialized.")
+    print("[Lifespan] Connection pool initialized.")
     
     yield
     
     # SHUTDOWN: Gracefully drain and terminate the connection pool
     await state["http_client"].aclose()
-    print("🛑 [Lifespan] Connection pool closed.")
+    print("[Lifespan] Connection pool closed.")
 
 
 app = FastAPI(
@@ -103,7 +102,7 @@ def verify_api_key(x_api_key: str = Header(..., description="API Access Key Head
 async def log_telemetry(prompt: str, tokens: int, client: httpx.AsyncClient):
     """Background Task: Non-blocking telemetry and metric emission."""
     await asyncio.sleep(0.5)  # Simulate I/O latency to analytics backend
-    print(f"📊 [Telemetry] Successfully logged prompt ({len(prompt)} chars) | Tokens: {tokens}")
+    print(f" [Telemetry] Successfully logged prompt ({len(prompt)} chars) | Tokens: {tokens}")
 
 
 # ─── 4. STATIC & DYNAMIC ROUTES ─────────────────────────────────────────────
